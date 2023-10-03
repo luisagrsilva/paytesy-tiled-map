@@ -14,8 +14,43 @@ WA.onInit()
 
     WA.room.area.onEnter("clock").subscribe(() => {
       const today = new Date();
-      const time = today.getHours() + ":" + today.getMinutes();
-      currentPopup = WA.ui.openPopup("clockPopup", "São " + time, []);
+
+      // Get the current time for each time zone
+      const portugalTime = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Europe/Lisbon",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      }).format(today);
+      const angolaTime = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Africa/Luanda",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      }).format(today);
+      const mozambiqueTime = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Africa/Maputo",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      }).format(today);
+      const brazilTime = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Sao_Paulo",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      }).format(today);
+
+      // Create the popup content with the times for each zone
+      const popupContent = `
+    Portugal: ${portugalTime}
+    Angola: ${angolaTime}
+    Moçambique: ${mozambiqueTime}
+    Brasil: ${brazilTime}
+  `;
+
+      // Open the popup with the formatted time information
+      currentPopup = WA.ui.openPopup("clockPopup", popupContent, []);
     });
 
     WA.room.area.onLeave("clock").subscribe(closePopup);
